@@ -10,7 +10,17 @@ function render() {
     li.className = t.done ? 'done' : '';
     li.innerHTML = '<input type="checkbox"><span></span><button aria-label="Delete">x</button>';
     li.querySelector('input').checked = t.done;
-    li.querySelector('span').textContent = t.text;
+    const span = li.querySelector('span');
+    span.textContent = t.text;
+    span.contentEditable = 'true';
+    // ponytail: blur commits, Enter blurs, empty edit reverts. Escape-to-cancel if anyone asks.
+    span.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); span.blur(); } };
+    span.onblur = () => {
+      const v = span.textContent.trim();
+      if (v === t.text) return;
+      t.text = v || t.text;
+      render();
+    };
     li.querySelector('input').onchange = () => { t.done = !t.done; render(); };
     li.querySelector('button').onclick = () => { tasks.splice(i, 1); render(); };
     list.append(li);
