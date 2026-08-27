@@ -1,14 +1,19 @@
 const list = document.getElementById('list');
+const count = document.getElementById('count');
+const empty = document.getElementById('empty');
 // ponytail: one localStorage key holding the whole array; fine until the list outgrows memory
 let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
 
 function render() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
   list.innerHTML = '';
+  const left = tasks.filter(t => !t.done).length;
+  count.textContent = tasks.length ? `${left} of ${tasks.length} remaining` : '';
+  empty.hidden = tasks.length > 0;
   tasks.forEach((t, i) => {
     const li = document.createElement('li');
     li.className = t.done ? 'done' : '';
-    li.innerHTML = '<input type="checkbox"><span></span><button aria-label="Delete">x</button>';
+    li.innerHTML = '<input type="checkbox"><span></span><button aria-label="Delete task" title="Delete">×</button>';
     li.querySelector('input').checked = t.done;
     const span = li.querySelector('span');
     span.textContent = t.text;

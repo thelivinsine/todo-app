@@ -3,16 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f5f3">
 <title>Todo</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Todo</h1>
-<form id="new">
-  <input id="text" placeholder="What needs doing?" required autocomplete="off" aria-label="New task">
-  <button>Add</button>
-</form>
-<ul id="list"></ul>
+<main class="card">
+  <header>
+    <h1>Today</h1>
+    <p id="count" class="count"></p>
+  </header>
+
+  <form id="new">
+    <input id="text" placeholder="What needs doing?" required autocomplete="off" aria-label="New task">
+    <button aria-label="Add task">Add</button>
+  </form>
+
+  <ul id="list"></ul>
+  <p id="empty" class="empty" hidden>Nothing here yet — add your first task above.</p>
+</main>
 <script src="app.js"></script>
 </body>
 </html>
