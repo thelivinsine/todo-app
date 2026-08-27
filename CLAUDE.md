@@ -10,17 +10,12 @@ Static localStorage todo list. Three files, no build step, no dependencies.
 
 - No libraries, no bundler. Open `index.html` directly to run it.
 - `app.js` re-renders the whole list on every change (`render()`). `save()` writes `localStorage`; `render()` calls it. Don't add DOM diffing.
-- **Never call `render()` from the inline-edit `blur` handler.** The task text is `contentEditable`, so clicking the delete button or checkbox first blurs the span. If blur rebuilds the list, the node under the cursor is replaced before `mouseup`, no `click` fires, and the first click after any edit silently does nothing. Blur commits in place: write `t.text`, call `save()`, touch the DOM directly. Same trap for any future handler that re-renders on focus loss.
+- **Never call `render()` from the inline-edit `blur` handler** (or any focus-loss handler). Task text is `contentEditable`, so clicking the × or checkbox blurs it first; if that rebuilds the list, the node is replaced before `mouseup` and no `click` fires, so the first click after an edit does nothing. Blur commits in place: set `t.text`, `save()`, touch the DOM directly.
 - Use `textContent` for task text, never `innerHTML` — user input must not be parsed as HTML.
 
 ## Verifying
 
-No tests and no test runner — verification is manual: open `index.html` and click. The regression worth re-checking after touching `render()` or the edit handler: add two tasks, type in the first one's text, then click the second one's ×. It must delete on that first click.
-
-## Known gaps
-
-- `Screenshots/Screenshot 2026-08-27 104006.png` shows the pre-polish UI; stale, safe to delete or regenerate.
-- `style.css` uses `color-mix()` with no fallback. On a browser without it, `li span:focus` loses its focus indicator entirely (both the background and box-shadow are `color-mix`, and `outline: none` is unconditional).
+No tests, no test runner — open `index.html` and click. The regression to re-check after touching `render()` or the edit handler: add two tasks, type in the first one's text, then click the second one's ×. It must delete on that first click.
 
 ## Deploy
 
