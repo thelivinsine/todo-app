@@ -122,10 +122,12 @@ li span {
   margin: -.15rem -.25rem;
   border-radius: .3rem;
   overflow-wrap: anywhere;
-  transition: color .15s, opacity .15s;
+  transition: color .15s;
 }
+/* ponytail: flat box-shadow first is the no-color-mix fallback, not a duplicate — don't trim it */
 li span:focus {
   outline: none;
+  box-shadow: 0 0 0 2px var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
 }
